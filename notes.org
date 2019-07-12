@@ -36,6 +36,11 @@ l    - servo 3 right
 ** Python Keyboard Monitoring
 See: https://pythonhosted.org/pynput/keyboard.html
 
+Install python library for keyboard input.
+#+BEGIN_SRC 
+pip3 install pynput
+#+END_SRC
+
 #+BEGIN_SRC python
 from pynput.keyboard import Key, Listener
 
