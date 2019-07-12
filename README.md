@@ -1,7 +1,7 @@
 # junkbot
-![The Junkbot](images/junkbot.png =250x)
+<img src="images/junkbot.png" width="250x" alt="The Junkbot" align=right>
 
-The Junkbot project
+The Junkbot
 
 ## Videos
 Early Prototype, Test 1 - https://www.youtube.com/watch?v=g5yDYPbkZFk
