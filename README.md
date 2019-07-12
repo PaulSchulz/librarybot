@@ -1,5 +1,5 @@
 # junkbot
-![The Junkbot]{images/junkbot.png}
+![The Junkbot](images/junkbot.png =250x)
 
 The Junkbot project
 
