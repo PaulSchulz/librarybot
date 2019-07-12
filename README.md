@@ -1,5 +1,6 @@
 # junkbot
-{images/junkbot.png}
+![The Junkbot]{images/junkbot.png}
+
 The Junkbot project
 
 ## Videos
