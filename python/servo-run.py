@@ -119,15 +119,16 @@ def on_press(key):
     print('Throttle '.throttle)
     print('Align    '.align)
 
-    if on_quit:
+    if on_quit == True:
         return False
 
 def on_release(key):
     # print('{0} release'.format(key))
-    # if key == Key.esc:
-    #     # Stop listener
-    #    return False
-    return True
+    if key == Key.esc:
+        # Stop listener, but stop motors first
+        kit.continuous_servo[motorLeft].throttle  = 0.0
+        kit.continuous_servo[motorRight].throttle = 0.0
+        return False
     
 # Collect events until released
 with Listener(
