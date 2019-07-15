@@ -31,7 +31,7 @@ if test == True:
     time.sleep(1)
     kit.servo[microservo1].angle = 0
     time.sleep(1)
-    
+
     print("Test Motor Left")
     print(" - forward")
     kit.continuous_servo[motorLeft].throttle = 1.0
@@ -127,7 +127,8 @@ def on_release(key):
     # if key == Key.esc:
     #     # Stop listener
     #    return False
-
+    return True
+    
 # Collect events until released
 with Listener(
         on_press=on_press,
