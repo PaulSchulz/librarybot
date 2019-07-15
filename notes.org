@@ -8,12 +8,12 @@ The Junkbot uses an Pihat with i2c to control servos
 * Keyboard Servo Control
 5 servos 
 - 2 motors
-  - left (channel 0)
-  - right cChannel 1)
+  - left (channel 0 - continious)
+  - right (channel 1 - continious)
 - 3 servos
-  - channel 4
-  - channel 5
-  - channel 6
+  - channel 4 - large black
+  - channel 8 - microserver 1 
+  - channel 9 - microserver 2
 
 Keys
 ----
