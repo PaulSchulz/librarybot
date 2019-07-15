@@ -83,6 +83,8 @@ def on_press(key):
         align = align + 0.05
     if key == "d":
         align = align - 0.05
+    if key == "q":
+        quit()
 
     # Not true steering as turn rate does not increase with throttle
     # Might need to use ratio's instead
