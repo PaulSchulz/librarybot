@@ -75,7 +75,7 @@ def on_press(key):
         throttle = throttle - 0.1
     if key == "a":
         align = align + 0.05
-    if key == "d";
+    if key == "d":
         align = align - 0.05
 
     left_throttle  = throttle - align
