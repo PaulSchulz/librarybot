@@ -8,12 +8,7 @@ import busio
 from adafruit_servokit import ServoKit
 kit = ServoKit(channels=16)
 
-print("Hello blinka!")
- 
-# Try to create an I2C device
-#i2c = busio.I2C(board.SCL, board.SDA)
-#hat = adafruit_pca9685.PCA9685(i2c)
-#print("I2C ok!")
+print("Hello junkbot!")
 
 motorLeft  = 0
 motorRight = 1
@@ -21,57 +16,85 @@ motorRight = 1
 microservo0 = 2
 microservo1 = 3
 
-# Test servos
-print("Test microservo0")
-kit.servo[microservo0].angle = 90
-time.sleep(1)
-kit.servo[microservo0].angle = 0
-time.sleep(1)
+test = false
 
-print("Test microserver1")
-kit.servo[microservo1].angle = 90
-time.sleep(1)
-kit.servo[microservo1].angle = 0
-time.sleep(1)
+if test == true:
+    # Test servos
+    print("Test microservo0")
+    kit.servo[microservo0].angle = 90
+    time.sleep(1)
+    kit.servo[microservo0].angle = 0
+    time.sleep(1)
 
-print("Test Motor Left")
-print(" - forward")
-kit.continuous_servo[motorLeft].throttle = 1.0
-time.sleep(1)
-print(" - stop")
-kit.continuous_servo[motorLeft].throttle = 0.0
-time.sleep(1)
-print(" - backwards")
-kit.continuous_servo[motorLeft].throttle = -1.0
-time.sleep(1)
-print(" - stop")
-kit.continuous_servo[motorLeft].throttle = 0.0
-time.sleep(1)
+    print("Test microserver1")
+    kit.servo[microservo1].angle = 90
+    time.sleep(1)
+    kit.servo[microservo1].angle = 0
+    time.sleep(1)
+    
+    print("Test Motor Left")
+    print(" - forward")
+    kit.continuous_servo[motorLeft].throttle = 1.0
+    time.sleep(1)
+    print(" - stop")
+    kit.continuous_servo[motorLeft].throttle = 0.0
+    time.sleep(1)
+    print(" - backwards")
+    kit.continuous_servo[motorLeft].throttle = -1.0
+    time.sleep(1)
+    print(" - stop")
+    kit.continuous_servo[motorLeft].throttle = 0.0
+    time.sleep(1)
 
-print("Test Motor Right")
-print(" - forward")
-kit.continuous_servo[motorRight].throttle = 1.0
-time.sleep(1)
-print(" - stop")
-kit.continuous_servo[motorRight].throttle = 0.0
-time.sleep(1)
-print(" - backwards")
-kit.continuous_servo[motorRight].throttle = -1.0
-time.sleep(1)
-print(" - stop")
-kit.continuous_servo[motorRight].throttle = 0.0
-time.sleep(1)
-
-print("Test done!")
+    print("Test Motor Right")
+    print(" - forward")
+    kit.continuous_servo[motorRight].throttle = 1.0
+    time.sleep(1)
+    print(" - stop")
+    kit.continuous_servo[motorRight].throttle = 0.0
+    time.sleep(1)
+    print(" - backwards")
+    kit.continuous_servo[motorRight].throttle = -1.0
+    time.sleep(1)
+    print(" - stop")
+    kit.continuous_servo[motorRight].throttle = 0.0
+    time.sleep(1)
+    
+    print("Testing done!")
 
 throttle = 0.0
+align    = 0.0
 
 def on_press(key):
+    globol throttle
     print('{0} pressed'.format(
         key))
-    throttle = 0.5
-    kit.continuous_servo[motorRight].throttle = throttle
+    if key == "w":
+        throttle = throttle + 0.1
+    if key == "s":
+        throttle = throttle - 0.1
+    if key == "a":
+        align = align + 0.05
+    if key == "d";
+        align = align - 0.05
+
+    left_throttle  = throttle - align
+    right_throttle = throttle + align       
+    # limits
+    if left_throttle > 1.0:
+        left_throttle = 1.0
+    if left_throttle < 1.0:
+        left_throttle = 1.0
+
+    if right_throttle > 1.0:
+       right_throttle = 1.0
+    if right_throttle < 1.0:
+        right_throttle = 1.0
+    
+    kit.continuous_servo[motorLeft].throttle  = left_throttle
+    kit.continuous_servo[motorRight].throttle = right_throttle
     print('Throttle {0}'.format(throttle))
+    print('Align    {0}'.format(align))
 
 def on_release(key):
     print('{0} release'.format(
