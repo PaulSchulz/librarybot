@@ -69,7 +69,7 @@ throttle = 0.0
 def on_press(key):
     print('{0} pressed'.format(
         key))
-    throttle = throttle + 0.1
+    throttle = 0.5
     kit.continuous_servo[motorRight].throttle = throttle
     print('Throttle {0}'.format(throttle))
 
