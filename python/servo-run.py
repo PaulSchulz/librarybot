@@ -63,10 +63,12 @@ if test == True:
     print("Testing done!")
 
 throttle = 0.0
+ # Motor drive alignment, used for differential motor driving
 align    = 0.0
 
 def on_press(key):
     global throttle
+    global align
     print('{0} pressed'.format(
         key))
     if key == "w":
@@ -78,8 +80,11 @@ def on_press(key):
     if key == "d":
         align = align - 0.05
 
+    # Not true steering as turn rate does not increase with throttle
+    # Might need to use ratio's instead
     left_throttle  = throttle - align
-    right_throttle = throttle + align       
+    right_throttle = throttle + align
+    
     # limits
     if left_throttle > 1.0:
         left_throttle = 1.0
