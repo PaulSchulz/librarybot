@@ -78,13 +78,13 @@ def on_press(key):
     # print('{0} pressed'.format(key))
 
     # Throttle and Steering
-    if key == 'w':
+    if key.char == 'w':
         throttle = throttle + 0.1
-    if key == 's':
+    if key.char == 's':
         throttle = throttle - 0.1
-    if key == 'a':
+    if key.char == 'a':
         align = align + 0.05
-    if key == 'd':
+    if key.char == 'd':
         align = align - 0.05
 
     # Stop motion
@@ -93,7 +93,7 @@ def on_press(key):
         align    = 0.0
 
     # Quit (but stop first)
-    if key == 'q':
+    if key.char == 'q':
         do_quit  = True
         throttle = 0.0
         align    = 0.0
@@ -119,7 +119,7 @@ def on_press(key):
     print('Throttle '.throttle)
     print('Align    '.align)
 
-    if on_quit == True:
+    if do_quit == True:
         return False
 
 def on_release(key):
