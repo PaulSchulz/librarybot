@@ -16,9 +16,9 @@ motorRight = 1
 microservo0 = 2
 microservo1 = 3
 
-test = false
+test = False
 
-if test == true:
+if test == True:
     # Test servos
     print("Test microservo0")
     kit.servo[microservo0].angle = 90
