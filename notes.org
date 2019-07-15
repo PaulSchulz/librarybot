@@ -98,6 +98,7 @@ Check i2c interface status
 sudo i2cdetect -y 1
 #+END_SRC
 
+On Microsoft Serface Pro 3:
 #+BEGIN_SRC 
 sudo i2cdetect -l
 i2c-3	i2c       	i915 gmbus ssc                  	I2C adapter
@@ -112,6 +113,12 @@ i2c-0	i2c       	Synopsys DesignWare I2C adapter 	I2C adapter
 i2c-9	i2c       	DPDDC-A                         	I2C adapter
 i2c-7	i2c       	i915 gmbus dpb                  	I2C adapter
 i2c-5	i2c       	i915 gmbus panel                	I2C adapter
+#+END_SRC
+
+On Raspberry Pi with PiHat:
+#+BEGIN_SRC 
+sudo i2cdetect -l
+i2c-1	i2c       	bcm2835 I2C adapter             	I2C adapter
 #+END_SRC
 
 *** Blinka Package
