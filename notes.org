@@ -73,6 +73,10 @@ sudo pip3 install --upgrade setuptools
 # sudo apt-get install python3-pip
 #+END_SRC
 
+#+BEGIN_SRC 
+sudo pip3 install adafruit-circuitpython-servokit
+#+END_SRC
+
 Check i2c device interface
 #+BEGIN_SRC 
 ls /dev/i2c*
@@ -130,22 +134,12 @@ pip3 install adafruit-blinka
 Test
 #+BEGIN_SRC python
 import board
-import digitalio
-import busio
  
 print("Hello blinka!")
- 
-# Try to great a Digital input
-pin = digitalio.DigitalInOut(board.D4)
-print("Digital IO ok!")
  
 # Try to create an I2C device
 i2c = busio.I2C(board.SCL, board.SDA)
 print("I2C ok!")
- 
-# Try to create an SPI device
-spi = busio.SPI(board.SCLK, board.MOSI, board.MISO)
-print("SPI ok!")
  
 print("done!")
 #+END_SRC
