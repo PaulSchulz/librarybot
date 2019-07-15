@@ -125,7 +125,9 @@ sudo i2cdetect -l
 i2c-1	i2c       	bcm2835 I2C adapter             	I2C adapter
 #+END_SRC
 
-*** Blinka Package
+*** Blinka
+This is an example package.
+
 #+BEGIN_SRC 
 pip3 install RPI.GPIO
 pip3 install adafruit-blinka
@@ -178,9 +180,55 @@ kit = ServoKit(channels=16)
 
 #+END_SRC
 
+*** servo-run.py
+This script takes key-presses and sets the servers approprately. 
+
+This script uses the 'pynput' package to detect key presses and this
+has a couple of issues:
+
+- Key strokes are still sent to the terminal and displayed during
+  execution, and after execution terminates.
+
+- Detected keystrokes include non-displayable 'charaters' which causes
+  an exception to be thrown. This needs to be managed so that the
+  program doesn't terminate unexpectadly.
+
+Features:
+- For development, hardware speciic calls can be disabled with the
+  'hardware' flag.
+
+- A 'debug' flag can be used to display useful status output during
+  development.
+
+**** Future Development
+- Use a different library to capture keystrokes (eg. like getch)
+
+- There is another Python keypress library available somewhere...
+
+- Investigate using ROS (Robot Operating System) as a way of dealing
+  with the keypress events. This solution would allow many more
+  possibilities for other controller combinations.  
+
 ** Usability
 *** Desktop Icons
-Put the following in /home/pi/Desktop/junkbot-driver.desktop
+Put the following files in
+- /home/pi/Desktop/
+- /home/pi/.local/share/applications/
+
+The desktop directory displays a link on the desktop, but when clicked
+it has an additional prompt on how to execute the program. Not ideal,
+and I haven't figured out how to get around this.
+
+(My Google Foo failed to find anyone suggesting how to do this. Some
+people asked the question, but the answer appeared to alway end up
+going in another direction.)
+
+The applications directory puts an entry in in the Raspbian Desktop
+Menu under 'Other', unless the 'Category' is set to something
+recognisable and predefined in the system. Idealy, it would be good to
+have a menu category (submenu) for 'Junkbot'.
+
+File: junkbot-driver.desktop
 #+BEGIN_SRC
 [Desktop Entry]
 Name=Junkbot Driver
@@ -193,7 +241,7 @@ Terminal=true
 Categories=None;
 #+END_SRC
 
-/home/pi/Desktop/junkbot-video.desktop
+File: junkbot-video.desktop
 #+BEGIN_SRC 
 [Desktop Entry]
 Name=Junkbot Video
