@@ -64,9 +64,14 @@ time.sleep(1)
 
 print("Test done!")
 
+throttle = 0.0
+
 def on_press(key):
     print('{0} pressed'.format(
         key))
+    throttle = throttle + 0.1
+    kit.continuous_servo[motorRight].throttle = throttle
+    print('Throttle {0}'.format(throttle))
 
 def on_release(key):
     print('{0} release'.format(
