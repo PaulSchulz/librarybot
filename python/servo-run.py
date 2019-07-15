@@ -73,24 +73,36 @@ kit.continuous_servo[motorRight].throttle = throttle
 def on_press(key):
     global throttle
     global align
-    print('{0} pressed'.format(
-        key))
-    if key == "w":
+    do_quit = False
+    
+    # print('{0} pressed'.format(key))
+
+    # Throttle and Steering
+    if key.char == 'w':
         throttle = throttle + 0.1
-    if key == "s":
+    if key.char == 's':
         throttle = throttle - 0.1
-    if key == "a":
+    if key.char == 'a':
         align = align + 0.05
-    if key == "d":
+    if key.char == 'd':
         align = align - 0.05
-    if key == "q":
-        quit()
+
+    # Stop motion
+    if key == Key.space:
+        throttle = 0.0
+        align    = 0.0
+
+    # Quit (but stop first)
+    if key.char == 'q':
+        do_quit  = True
+        throttle = 0.0
+        align    = 0.0
 
     # Not true steering as turn rate does not increase with throttle
     # Might need to use ratio's instead
     left_throttle  = throttle - align
     right_throttle = throttle + align
-    
+
     # limits
     if left_throttle > 1.0:
         left_throttle = 1.0
@@ -101,18 +113,20 @@ def on_press(key):
        right_throttle = 1.0
     if right_throttle < -1.0:
         right_throttle = -1.0
-    
+
     kit.continuous_servo[motorLeft].throttle  = left_throttle
     kit.continuous_servo[motorRight].throttle = right_throttle
-    print('Throttle {0}'.format(throttle))
-    print('Align    {0}'.format(align))
+    print('Throttle '.throttle)
+    print('Align    '.align)
+
+    if on_quit:
+        return False
 
 def on_release(key):
-    print('{0} release'.format(
-        key))
-    if key == Key.esc:
-        # Stop listener
-        return False
+    # print('{0} release'.format(key))
+    # if key == Key.esc:
+    #     # Stop listener
+    #    return False
 
 # Collect events until released
 with Listener(
