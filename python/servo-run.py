@@ -31,7 +31,7 @@ if test == True:
     time.sleep(1)
     kit.servo[microservo1].angle = 0
     time.sleep(1)
-
+    
     print("Test Motor Left")
     print(" - forward")
     kit.continuous_servo[motorLeft].throttle = 1.0
@@ -73,36 +73,24 @@ kit.continuous_servo[motorRight].throttle = throttle
 def on_press(key):
     global throttle
     global align
-    do_quit = False
-    
-    # print('{0} pressed'.format(key))
-
-    # Throttle and Steering
-    if key.char == 'w':
+    print('{0} pressed'.format(
+        key))
+    if key == "w":
         throttle = throttle + 0.1
-    if key.char == 's':
+    if key == "s":
         throttle = throttle - 0.1
-    if key.char == 'a':
+    if key == "a":
         align = align + 0.05
-    if key.char == 'd':
+    if key == "d":
         align = align - 0.05
-
-    # Stop motion
-    if key == Key.space:
-        throttle = 0.0
-        align    = 0.0
-
-    # Quit (but stop first)
-    if key.char == 'q':
-        do_quit  = True
-        throttle = 0.0
-        align    = 0.0
+    if key == "q":
+        quit()
 
     # Not true steering as turn rate does not increase with throttle
     # Might need to use ratio's instead
     left_throttle  = throttle - align
     right_throttle = throttle + align
-
+    
     # limits
     if left_throttle > 1.0:
         left_throttle = 1.0
@@ -113,23 +101,19 @@ def on_press(key):
        right_throttle = 1.0
     if right_throttle < -1.0:
         right_throttle = -1.0
-
+    
     kit.continuous_servo[motorLeft].throttle  = left_throttle
     kit.continuous_servo[motorRight].throttle = right_throttle
-    print('Throttle '.throttle)
-    print('Align    '.align)
-
-    if do_quit == True:
-        return False
+    print('Throttle {0}'.format(throttle))
+    print('Align    {0}'.format(align))
 
 def on_release(key):
-    # print('{0} release'.format(key))
+    print('{0} release'.format(
+        key))
     if key == Key.esc:
-        # Stop listener, but stop motors first
-        kit.continuous_servo[motorLeft].throttle  = 0.0
-        kit.continuous_servo[motorRight].throttle = 0.0
+        # Stop listener
         return False
-    
+
 # Collect events until released
 with Listener(
         on_press=on_press,
