@@ -177,3 +177,31 @@ kit = ServoKit(channels=16)
 # kit.servo[0].set_pulse_width_range(1000, 2000)
 
 #+END_SRC
+
+** Usability
+*** Desktop Icons
+Put the following in /home/pi/Desktop/junkbot-driver.desktop
+#+BEGIN_SRC
+[Desktop Entry]
+Name=Junkbot Driver
+Comment=Junkbot Driver Controls
+Icon=/usr/share/pixmaps/openbox.xpm
+Exec=/usr/bin/python3 /home/pi/Documents/git/junkbot/python/servo-run.py
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;
+#+END_SRC
+
+/home/pi/Desktop/junkbot-video.desktop
+#+BEGIN_SRC 
+[Desktop Entry]
+Name=Junkbot Video
+Comment=Display Junkbot Video
+Icon=/usr/share/pixmaps/openbox.xpm
+Exec=/usr/bin/vlc --playlist-autostart v4l2:///dev/video0
+Type=Application
+Encoding=UTF-8
+Terminal=false
+Categories=None;
+#+END_SRC
