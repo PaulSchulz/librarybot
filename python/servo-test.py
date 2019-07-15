@@ -21,15 +21,15 @@ microservo1 = 3
 
 # Test servos
 print("Test microservo0")
-kit.servo[servo0].angle = 90
+kit.servo[microservo0].angle = 90
 time.sleep(1)
-kit.servo[servo0].angle = 0
+kit.servo[microservo0].angle = 0
 time.sleep(1)
 
 print("Test microserver1")
-kit.servo[servo1].angle = 90
+kit.servo[microservo1].angle = 90
 time.sleep(1)
-kit.servo[servo1].angle = 0
+kit.servo[microservo1].angle = 0
 time.sleep(1)
 
 print("Test Motor Left - forward")
