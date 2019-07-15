@@ -66,6 +66,10 @@ throttle = 0.0
  # Motor drive alignment, used for differential motor driving
 align    = 0.0
 
+# Zero Throttle
+kit.continuous_servo[motorLeft].throttle  = throttle
+kit.continuous_servo[motorRight].throttle = throttle
+
 def on_press(key):
     global throttle
     global align
