@@ -8,59 +8,15 @@ import busio
 from adafruit_servokit import ServoKit
 kit = ServoKit(channels=16)
 
+print("--------------")
 print("Hello junkbot!")
+print("--------------")
 
 motorLeft  = 0
 motorRight = 1
 
 microservo0 = 2
 microservo1 = 3
-
-test = False
-
-if test == True:
-    # Test servos
-    print("Test microservo0")
-    kit.servo[microservo0].angle = 90
-    time.sleep(1)
-    kit.servo[microservo0].angle = 0
-    time.sleep(1)
-
-    print("Test microserver1")
-    kit.servo[microservo1].angle = 90
-    time.sleep(1)
-    kit.servo[microservo1].angle = 0
-    time.sleep(1)
-    
-    print("Test Motor Left")
-    print(" - forward")
-    kit.continuous_servo[motorLeft].throttle = 1.0
-    time.sleep(1)
-    print(" - stop")
-    kit.continuous_servo[motorLeft].throttle = 0.0
-    time.sleep(1)
-    print(" - backwards")
-    kit.continuous_servo[motorLeft].throttle = -1.0
-    time.sleep(1)
-    print(" - stop")
-    kit.continuous_servo[motorLeft].throttle = 0.0
-    time.sleep(1)
-
-    print("Test Motor Right")
-    print(" - forward")
-    kit.continuous_servo[motorRight].throttle = 1.0
-    time.sleep(1)
-    print(" - stop")
-    kit.continuous_servo[motorRight].throttle = 0.0
-    time.sleep(1)
-    print(" - backwards")
-    kit.continuous_servo[motorRight].throttle = -1.0
-    time.sleep(1)
-    print(" - stop")
-    kit.continuous_servo[motorRight].throttle = 0.0
-    time.sleep(1)
-    
-    print("Testing done!")
 
 throttle = 0.0
  # Motor drive alignment, used for differential motor driving
