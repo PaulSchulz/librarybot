@@ -66,7 +66,7 @@ throttle = 0.0
 align    = 0.0
 
 def on_press(key):
-    globol throttle
+    global throttle
     print('{0} pressed'.format(
         key))
     if key == "w":
