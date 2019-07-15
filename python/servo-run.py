@@ -94,13 +94,13 @@ def on_press(key):
     # limits
     if left_throttle > 1.0:
         left_throttle = 1.0
-    if left_throttle < 1.0:
-        left_throttle = 1.0
+    if left_throttle < -1.0:
+        left_throttle = -1.0
 
     if right_throttle > 1.0:
        right_throttle = 1.0
-    if right_throttle < 1.0:
-        right_throttle = 1.0
+    if right_throttle < -1.0:
+        right_throttle = -1.0
     
     kit.continuous_servo[motorLeft].throttle  = left_throttle
     kit.continuous_servo[motorRight].throttle = right_throttle
