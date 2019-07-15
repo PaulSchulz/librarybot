@@ -1,5 +1,5 @@
-debug = True
 hardware = True
+debug = False
 
 from pynput.keyboard import Key, Listener
 
@@ -12,9 +12,21 @@ if hardware:
     from adafruit_servokit import ServoKit
     kit = ServoKit(channels=16)
 
-print("--------------")
-print("Hello junkbot!")
-print("--------------")
+print("-------")
+print("Junkbot")
+print("-------")
+print("");
+print("To drive the Junkbot from the keyboard use the following keys.")
+print("Press a key multiple times to increase the movement speed.")
+print("")
+print("  Keys:")
+print("            w     - Forward")
+print("         a  s  d  - Left / Reverse / Right")
+print("")
+print("          space   - Emergency Stop")
+print("")
+print("            q     - Quit program")
+print("")
 
 motorLeft  = 0
 motorRight = 1
