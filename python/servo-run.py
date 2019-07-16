@@ -72,8 +72,10 @@ def show_keys():
     print("")
     if tuning:
         print("  Tuning:")
-        print("    t      - Tuning numbers")
-        print("    [ ]    - Motor Direction")
+        print("    t      - Show tuning numbers")
+        print("    r f    - Increase/decrease throttle step size")
+        print("    z x    - Decrease/increase steering step size")
+        print("    [ ]    - Toggle Motor directions")
         print("    , .    - Adjust Left/Right Bias Ratio")
         show_tuning()
 
@@ -82,6 +84,8 @@ def on_press(key):
     global steering
     global drive_direction
     global drive_bias
+    global drive_throttle_step
+    global drive_steering_step
 
     do_quit = False
     
@@ -108,22 +112,42 @@ def on_press(key):
         # Tuning
         if key.char == 't':
             show_tuning()
+
+        # Drive throttle step size
+        if key.char == 'r':
+            drive_throttle_step    = drive_throttle_step + 1
+        if key.char == 'f':
+            drive_throttle_step    = drive_throttle_step - 1
+
+        # Drive steering  step size
+        if key.char == 'x':
+            drive_steering_step    = drive_steering_step + 1
+        if key.char == 'z':
+            drive_steering_step    = drive_steering_step - 1
+
         # Drive direction
         if key.char == '[':
-            drive_direction[Left] = -1 * drive_direction[Left]
+            drive_direction[Left]  = -1 * drive_direction[Left]
         if key.char == ']':
             drive_direction[Right] = -1 * drive_direction[Right]
+
         # Bias
         if key.char == ',':
-            drive_bias = drive_bias - 1
+            drive_bias             = drive_bias - 1
         if key.char == '.':
-            drive_bias = drive_bias + 1
+            drive_bias             = drive_bias + 1
             
         # Raw Limits
         if throttle > 100:  throttle = 100
         if throttle < -100: throttle = -100
         if steering > 100:  steering = 100
         if steering < -100: steering = -100
+
+        # Tuning limits
+        if drive_throttle_step < 1: drive_throttle_step = 1
+        if drive_steering_step < 1: drive_steering_step = 1
+        if drive_bias > 100:  drive_bias = 100
+        if drive_bias < -100: drive_bias = -100
 
         # Scale integers to range -1.0 to 1.0
         if drive_mode == 0:
