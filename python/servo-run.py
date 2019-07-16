@@ -25,8 +25,8 @@ Right                 = 1
 motor                 = [motorLeft,motorRight] # Motor channels
 # Drive Tuning
 drive_direction       = [1,1]
-drive_throttle_step   = 10
-drive_steering_step   = 5
+drive_throttle_step   = 1
+drive_steering_step   = 1
 drive_bias            = 0 # Left/Right ratio fix for motor variation
 
 # There are a couple of different driving/stearing modes
