@@ -1,5 +1,10 @@
-hardware = True
-debug = False
+# servo-run.py
+# Script for using keyboard to control the Junkbot robot
+
+hardware = True   # Is i2c PWM controller board present. It is useful to
+                  # be able to turn this off during development.
+tuning   = True   # Additionsl options for adjusting tuning parameters.
+debug    = False
 
 from pynput.keyboard import Key, Listener
 
@@ -8,46 +13,75 @@ import time
 if hardware:
     import board
     import busio
-    # import adafruit_pca9685 # Allows more control over PWM
     from adafruit_servokit import ServoKit
     kit = ServoKit(channels=16)
-
-print("-------")
-print("Junkbot")
-print("-------")
-print("");
-print("To drive the Junkbot from the keyboard use the following keys.")
-print("Press a key multiple times to increase the movement speed.")
-print("")
-print("  Keys:")
-print("            w     - Forward")
-print("         a  s  d  - Left / Reverse / Right")
-print("")
-print("          space   - Emergency Stop")
-print("")
-print("            q     - Quit program")
-print("")
 
 motorLeft  = 0
 motorRight = 1
 
+# Motor Labels
+Left                  = 0
+Right                 = 1
+motor                 = [motorLeft,motorRight] # Motor channels
+# Drive Tuning
+drive_direction       = [1,1]
+drive_throttle_step   = 10
+drive_steering_step   = 5
+drive_bias            = 0 # Left/Right ratio fix for motor variation
+
+# There are a couple of different driving/stearing modes
+drive_mode            = 0
+
 microservo0 = 2
 microservo1 = 3
 
-
+# Dynamic variables
 throttle = 0  # Use signed integer -100..100 for integer steps
-align    = 0  # Motor drive alignment, used for differential motor
-              # driving Range -200..200, twice size of throttle for
-              # spinning at full speed.
+steering = 0  # Used for differential motor driving Range -100..100
 
 # Zero Throttle
 if hardware:
     kit.continuous_servo[motorLeft].throttle  = 0.0
     kit.continuous_servo[motorRight].throttle = 0.0
 
+def show_tuning():
+    print()
+    print('  Throttle:  {0}'.format(throttle))
+    print('  Steering:  {0}'.format(steering))
+    print('  drive_direction     = [{0},{1}]'.format(drive_direction[Left],
+                                                     drive_direction[Right]))
+    print('  drive_throttle_step = {0}'.format(drive_throttle_step))
+    print('  drive_steering_step = {0}'.format(drive_steering_step))
+    print('  drive_bias          = {0}'.format(drive_bias))
+
+def show_keys():    
+    print("-------")
+    print("Junkbot")
+    print("-------")
+    print("");
+    print("To drive the Junkbot from the keyboard use the following keys.")
+    print("Press a key multiple times to increase the movement speed.")
+    print("")
+    print("  Keys:")
+    print("            w     - Forward")
+    print("         a  s  d  - Left / Reverse / Right")
+    print("")
+    print("          space   - Emergency Stop")
+    print("")
+    print("            q     - Quit program")
+    print("")
+    if tuning:
+        print("  Tuning:")
+        print("    t      - Tuning numbers")
+        print("    [ ]    - Motor Direction")
+        print("    , .    - Adjust Left/Right Bias Ratio")
+        show_tuning()
+
 def on_press(key):
     global throttle
-    global align
+    global steering
+    global drive_direction
+    global drive_bias
 
     do_quit = False
     
@@ -56,32 +90,52 @@ def on_press(key):
             print('{0} pressed'.format(key.char))
 
         if key.char == 'w':
-            throttle = throttle + 10
+            throttle = throttle + drive_throttle_step
         if key.char == 's':
-            throttle = throttle - 10
+            throttle = throttle - drive_throttle_step
         if key.char == 'a':
-            align = align + 5
+            steering = steering - drive_steering_step
         if key.char == 'd':
-            align = align - 5
+            steering = steering + drive_steering_step
         if key.char == ' ':
             throttle = 0
-            align    = 0
+            steering = 0
         if key.char == 'q':
             throttle = 0
-            align    = 0
+            steering = 0
             do_quit  = True
 
+        # Tuning
+        if key.char == 't':
+            show_tuning()
+        # Drive direction
+        if key.char == '[':
+            drive_direction[Left] = -1 * drive_direction[Left]
+        if key.char == ']':
+            drive_direction[Right] = -1 * drive_direction[Right]
+        # Bias
+        if key.char == ',':
+            drive_bias = drive_bias - 1
+        if key.char == '.':
+            drive_bias = drive_bias + 1
+            
         # Raw Limits
         if throttle > 100:  throttle = 100
-        if throttle < -100: trottle = -100
-        if align > 100:     align = 100
-        if align < -100:    align = -100
+        if throttle < -100: throttle = -100
+        if steering > 100:  steering = 100
+        if steering < -100: steering = -100
 
         # Scale integers to range -1.0 to 1.0
-        left_throttle  = (throttle - align) / 100
-        right_throttle = (throttle + align) / 100
-        # Not true steering as turn rate does not increase with throttle
-        # Might need to use ratio's instead
+        if drive_mode == 0:
+            left_throttle = drive_direction[Left] \
+                * (100 - drive_bias) / 100.0 \
+                * ((throttle - steering) / 100.0)
+
+            right_throttle = drive_direction[Right] \
+                * (100 + drive_bias) / 100.0 \
+                * ((throttle + steering) / 100.0)
+            # Not true steering as turn rate does not increase with throttle
+            # Might need to use ratio's instead
    
         # Scaled limits
         if left_throttle > 1.0:
@@ -96,7 +150,7 @@ def on_press(key):
 
         if debug:
             print('Throttle {0}'.format(throttle))
-            print('Align    {0}'.format(align))
+            print('Steering {0}'.format(steering))
         if hardware:
             kit.continuous_servo[motorLeft].throttle  = left_throttle
             kit.continuous_servo[motorRight].throttle = right_throttle
@@ -111,10 +165,10 @@ def on_press(key):
         if key == Key.space:
             # Emergency Reset
             throttle = 0
-            align    = 0
+            steering = 0
             if debug:
                 print('Throttle {0}'.format(throttle))
-                print('Align    {0}'.format(align))
+                print('Steering {0}'.format(steering))
             if hardware:
                 kit.continuous_servo[motorLeft].throttle  = 0.0
                 kit.continuous_servo[motorRight].throttle = 0.0
@@ -132,6 +186,7 @@ def on_release(key):
             kit.continuous_servo[motorRight].throttle = 0.0
         return False
 
+show_keys()
 # Collect events until released
 with Listener(
         on_press=on_press,
