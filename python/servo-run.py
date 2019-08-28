@@ -378,15 +378,15 @@ def on_press_managed(key):
         # servo_key_press(key)
         # Left
         if key.char == 'u':
-            servo_angle[Left]      = 0
+            servo_angle[Left]      = servo_angle[Left] + 10
         if key.char == 'j':
-            servo_angle[Left]      = 90
+            servo_angle[Left]      = servo_angle[Left] - 10
 
         # Right
         if key.char == 'i':
-            servo_angle[Right]     = 0
+            servo_angle[Right]     = servo_angle[Right] + 10
         if key.char == 'k':
-            servo_angle[Right]     = 90
+            servo_angle[Right]     = servo_angle[Right] - 10
 
         # Apply Limits (Driving)           
         # Raw Limits
