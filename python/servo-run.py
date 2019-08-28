@@ -73,8 +73,8 @@ motor                 = [motorLeft,motorRight]
 # Init
 # Drive
 drive_direction       = [1,1]
-drive_throttle_step   = 5
-drive_steering_step   = 1
+drive_throttle_step   = 20
+drive_steering_step   = 20
 drive_bias            = 0 # Left/Right ratio fix for motor variation
 
 # There are a couple of different driving/stearing modes
