@@ -10,20 +10,68 @@ from pynput.keyboard import Key, Listener
 
 import time
 
+# Command Line Processing
+import sys
+import argparse
+
+parser = argparse.ArgumentParser(description='Drive the robot with the keyboard.')
+parser.add_argument('--debug',
+                    action='store_const',
+                    const=True,
+                    help='Turn on debugging output (default: off)')
+parser.add_argument('--hardware',
+                    action='store_const',
+                    const=True,
+                    help='Run with hardware (default)')
+parser.add_argument('--nohardware',
+                    action='store_const',
+                    const=True,
+                    help='Run without hardware (used for testing)')
+
+# Override defaults
+args = parser.parse_args()
+if args.debug      != None: debug    = args.debug
+if args.hardware   != None: hardware = True
+if args.nohardware != None: hardware = False
+
 if hardware:
     import board
     import busio
     from adafruit_servokit import ServoKit
     kit = ServoKit(channels=16)
 
+if debug:
+    print("This is the name of the script: ", sys.argv[0])
+    print("Number of arguments: ", len(sys.argv))
+    print("The arguments are: " , str(sys.argv))
+    print("  args.debug:    ", args.debug)
+    print("  args.hardware: ", args.hardware)
+    print("  args.nohardware: ", args.nohardware)
+    print("Configuration")
+    print("debug:    ", debug)
+    print("hardware: ", hardware)
+
+# PWM Channels
 motorLeft  = 0
 motorRight = 1
+servoLeft  = 4
+servoRight = 5
 
-# Motor Labels
+# Labels
 Left                  = 0
 Right                 = 1
-motor                 = [motorLeft,motorRight] # Motor channels
-# Drive Tuning
+
+##############################################################################
+# Servo channels
+servo                 = [servoLeft,servoRight]
+
+##############################################################################
+# Motor channels
+motor                 = [motorLeft,motorRight]
+
+##############################################################################
+# Init
+# Drive
 drive_direction       = [1,1]
 drive_throttle_step   = 5
 drive_steering_step   = 1
@@ -32,23 +80,31 @@ drive_bias            = 0 # Left/Right ratio fix for motor variation
 # There are a couple of different driving/stearing modes
 # 1 - Direct Drive mode
 # 2 - Managed mode
+# 4 - Dance mode
+# 3 - Autonomous mode (TODO)
 drive_mode            = 2
-drive_mode_string     = ["Direct","Managed","Autonomous"]
+drive_mode_string     = ["Direct","Managed","Dance","Autonomous"]
 
-microservo0 = 2
-microservo1 = 3
-
-# Dynamic variables
+# Drive dynamic parameters
 throttle = 0     # Use signed integer -100..100 for integer steps
 steering = 0     # Used for differential motor driving Range -100..100
+leftarm  = 90    # Initial left servo position
+rightarm = 90    # Initial right servo position
+
+# Servo
+servo_angle = [90,90] 
 
 do_quit  = False # Exit if true
 
-# Zero Throttle
+# Zero Throttle and set arm servos to sensible values.
 if hardware:
     kit.continuous_servo[motorLeft].throttle  = 0.0
     kit.continuous_servo[motorRight].throttle = 0.0
-
+    kit.servo[servoLeft].angle  = leftarm
+    kit.servo[servoRight].angle = rightarm
+    
+##############################################################################
+# Functions
 def show_tuning():
     print()
     print('  Throttle:  {0}'.format(throttle))
@@ -67,9 +123,9 @@ def show_keys():
     print("To drive the Junkbot from the keyboard use the following keys.")
     print("Drive mode: {0}".format(drive_mode_string[drive_mode - 1]))
     print("")
-    print("  Keys:")
-    print("            w     - Forward")
-    print("         a  s  d  - Left / Reverse / Right")
+    print("  Drive:                                     Servos: Left  Right")
+    print("            w     - Forward                            u     i  - Up")
+    print("         a  s  d  - Left / Reverse / Right             j     k  - Down")
     print("")       
     print("          space   - Emergency Stop")
     print("            q     - Quit program")
@@ -82,7 +138,7 @@ def show_keys():
         print("    [ ]    - Toggle Motor directions")
         print("    , .    - Adjust Left/Right Bias Ratio")
         show_tuning()
-
+        
 # FIXME Direct Drive
 def on_press_direct(key):
     global throttle
@@ -93,12 +149,15 @@ def on_press_direct(key):
     global drive_steering_step
     global drive_mode
 
+    global servo_angle
+    
     do_quit = False
     
     try:
         if debug:
             print('{0} pressed'.format(key.char))
 
+        # Driving
         if key.char == 'w':
             throttle = throttle + drive_throttle_step
         if key.char == 's':
@@ -115,7 +174,8 @@ def on_press_direct(key):
             steering = 0
             do_quit  = True
 
-        # Tuning
+        # Tuning the drive parameters
+        # Show
         if key.char == 't':
             show_tuning()
 
@@ -142,17 +202,32 @@ def on_press_direct(key):
             drive_bias             = drive_bias - 1
         if key.char == '.':
             drive_bias             = drive_bias + 1
-            
-        # Raw Limits
-        if throttle > 100:  throttle = 100
+
+        # Servos
+        # servo_key_press(key)
+        # Left
+        if key.char == 'u':
+            servo_angle[Left]      = 0
+        if key.char == 'j':
+            servo_angle[Left]      = 90
+
+        # Right
+        if key.char == 'i':
+            servo_angle[Right]     = 0
+        if key.char == 'k':
+            servo_angle[Right]     = 90
+
+        # Apply Limits (Driving)
+        # Raw Driving Limits
+        if throttle >  100: throttle =  100
         if throttle < -100: throttle = -100
-        if steering > 100:  steering = 100
+        if steering >  100: steering =  100
         if steering < -100: steering = -100
 
         # Tuning limits
         if drive_throttle_step < 1: drive_throttle_step = 1
         if drive_steering_step < 1: drive_steering_step = 1
-        if drive_bias > 100:  drive_bias = 100
+        if drive_bias > 100:  drive_bias =  100
         if drive_bias < -100: drive_bias = -100
 
         # Scale integers to range -1.0 to 1.0
@@ -177,12 +252,34 @@ def on_press_direct(key):
         if right_throttle < -1.0:
             right_throttle = -1.0
 
+        # Apply Limits (Servos)
+        # servo_limits()
+        if servo_angle[Left] < 0:
+            servo_angle[Left] = 0
+        if servo_angle[Left] > 100:
+            servo_angle[Left] = 100
+
+        if servo_angle[Right] < 0:
+            servo_angle[Right] = 0
+        if servo_angle[Right] > 100:
+            servo_angle[Right] = 100
+            
+        # Drive motors
         if debug:
             print('Throttle {0}'.format(throttle))
             print('Steering {0}'.format(steering))
         if hardware:
             kit.continuous_servo[motorLeft].throttle  = left_throttle
             kit.continuous_servo[motorRight].throttle = right_throttle
+
+        # Move servos
+        # servo_drive()
+        if debug:
+            print('Servo left  {0}'.format(servo_angle[Left]))
+            print('Servo right {0}'.format(servo_angle[Right]))
+        if hardware:
+            kit.servo[servoLeft].angle  = servo_angle[Left]
+            kit.servo[servoRight].angle = servo_angle[Right]
 
         if do_quit:
             return False
@@ -201,8 +298,6 @@ def on_press_direct(key):
             if hardware:
                 kit.continuous_servo[motorLeft].throttle  = 0.0
                 kit.continuous_servo[motorRight].throttle = 0.0
-            
-        #Add Code
 
 # Managed keyboard driving
 # ------------------------
@@ -224,6 +319,10 @@ def on_press_managed(key):
     global drive_mode
     global do_quit
     
+    global servo_angle
+    
+    do_quit = False
+
     try:
         if debug:
             print('{0} pressed'.format(key.char))
@@ -250,6 +349,7 @@ def on_press_managed(key):
         # Tuning
         if key.char == 't':
             show_tuning()
+            
         # Drive throttle step size
         if key.char == 'r':
             drive_throttle_step    = drive_throttle_step + 1
@@ -273,7 +373,22 @@ def on_press_managed(key):
             drive_bias             = drive_bias - 1
         if key.char == '.':
             drive_bias             = drive_bias + 1
-            
+
+        # Servos
+        # servo_key_press(key)
+        # Left
+        if key.char == 'u':
+            servo_angle[Left]      = 0
+        if key.char == 'j':
+            servo_angle[Left]      = 90
+
+        # Right
+        if key.char == 'i':
+            servo_angle[Right]     = 0
+        if key.char == 'k':
+            servo_angle[Right]     = 90
+
+        # Apply Limits (Driving)           
         # Raw Limits
         if throttle > 100:  throttle = 100
         if throttle < -100: throttle = -100
@@ -285,6 +400,18 @@ def on_press_managed(key):
         if drive_steering_step < 1: drive_steering_step = 1
         if drive_bias > 100:  drive_bias = 100
         if drive_bias < -100: drive_bias = -100
+
+        # Apply Limits (Servos)
+        # servo_limits()
+        if servo_angle[Left] < 0:
+            servo_angle[Left] = 0
+        if servo_angle[Left] > 100:
+            servo_angle[Left] = 100
+
+        if servo_angle[Right] < 0:
+            servo_angle[Right] = 0
+        if servo_angle[Right] > 100:
+            servo_angle[Right] = 100
 
     except AttributeError:
         if debug:
@@ -359,11 +486,21 @@ while True:
             right_throttle = -1.0
         
         if debug:
-            print("{0} Left/Right: {1:4.2f} {2:4.2f}".format(millis,left_throttle,right_throttle))
+            formatstr = "{0} Drive L/R: {1:4.2f} {2:4.2f}   Servo L/R {3} {4}"
+            print(formatstr.format(millis,
+                                   left_throttle,
+                                   right_throttle,
+                                   servo_angle[Left],
+                                   servo_angle[Right]))
+
         if hardware:
+            # Drive motors
             kit.continuous_servo[motorLeft].throttle  = left_throttle
             kit.continuous_servo[motorRight].throttle = right_throttle
-
+            # Drive servos
+            kit.servo[servoLeft].angle  = servo_angle[Left]
+            kit.servo[servoRight].angle = servo_angle[Right]
+          
         # Stop after run
         left_throttle  = 0.0
         right_throttle = 0.0
