@@ -405,13 +405,13 @@ def on_press_managed(key):
         # servo_limits()
         if servo_angle[Left] < 0:
             servo_angle[Left] = 0
-        if servo_angle[Left] > 100:
-            servo_angle[Left] = 100
+        if servo_angle[Left] > 180:
+            servo_angle[Left] = 180
 
         if servo_angle[Right] < 0:
             servo_angle[Right] = 0
-        if servo_angle[Right] > 100:
-            servo_angle[Right] = 100
+        if servo_angle[Right] > 180:
+            servo_angle[Right] = 180
 
     except AttributeError:
         if debug:
