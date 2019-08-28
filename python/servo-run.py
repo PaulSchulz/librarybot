@@ -93,6 +93,7 @@ rightarm = 90    # Initial right servo position
 
 # Servo
 servo_angle = [0,0] 
+servo_angle_max = [160,160]
 
 do_quit  = False # Exit if true
 
@@ -150,6 +151,7 @@ def on_press_direct(key):
     global drive_mode
 
     global servo_angle
+    global servo_angle_max
     
     do_quit = False
     
@@ -256,13 +258,13 @@ def on_press_direct(key):
         # servo_limits()
         if servo_angle[Left] < 0:
             servo_angle[Left] = 0
-        if servo_angle[Left] > 100:
-            servo_angle[Left] = 100
+        if servo_angle[Left] > servo_angle_max[Left]:
+            servo_angle[Left] = servo_angle_max[Left]
 
         if servo_angle[Right] < 0:
             servo_angle[Right] = 0
-        if servo_angle[Right] > 100:
-            servo_angle[Right] = 100
+        if servo_angle[Right] > servo_angle_max[Right]:
+            servo_angle[Right] = servo_angle_max[Right]
             
         # Drive motors
         if debug:
@@ -320,6 +322,7 @@ def on_press_managed(key):
     global do_quit
     
     global servo_angle
+    global servo_angle_max
     
     do_quit = False
 
@@ -405,13 +408,13 @@ def on_press_managed(key):
         # servo_limits()
         if servo_angle[Left] < 0:
             servo_angle[Left] = 0
-        if servo_angle[Left] > 180:
-            servo_angle[Left] = 180
+        if servo_angle[Left] > servo_angle_max[Left]:
+            servo_angle[Left] = servo_angle_max[Left]
 
         if servo_angle[Right] < 0:
             servo_angle[Right] = 0
-        if servo_angle[Right] > 180:
-            servo_angle[Right] = 180
+        if servo_angle[Right] > servo_angle_max[Right]:
+            servo_angle[Right] = servo_angle_max[Right]
 
     except AttributeError:
         if debug:
