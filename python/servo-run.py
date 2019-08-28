@@ -92,7 +92,7 @@ leftarm  = 90    # Initial left servo position
 rightarm = 90    # Initial right servo position
 
 # Servo
-servo_angle = [90,90] 
+servo_angle = [0,0] 
 
 do_quit  = False # Exit if true
 
