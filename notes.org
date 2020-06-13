@@ -1,7 +1,7 @@
 Project notes
 
 * i2c
-The Junkbot uses an Pihat with i2c to control servos
+The libraybot uses an Pihat with i2c to control servos
 - See: https://learn.adafruit.com/adafruit-16-channel-pwm-servo-hat-for-raspberry-pi/attach-and-test-the-hat
 - See: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c
 
