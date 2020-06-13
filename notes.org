@@ -1,22 +1,24 @@
-Project notes
+* Project notes
 
-* i2c
+** Hardware
+*** i2c
 The libraybot uses an Pihat with i2c to control servos
 - See: https://learn.adafruit.com/adafruit-16-channel-pwm-servo-hat-for-raspberry-pi/attach-and-test-the-hat
 - See: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c
 
-* Keyboard Servo Control
-5 servos 
+*** Keyboard Servo Control
+5 channels 
 - 2 motors
-  - left (channel 0 - continious)
-  - right (channel 1 - continious)
-- 3 servos
-  - channel 4 - large black
-  - channel 8 - microserver 1 
-  - channel 9 - microserver 2
+  - channel 0 - left - motor 1 (continious)
+  - channel 1 - right - motor 2 (continious)
+- 5 servos
+  - channel 4 - Arm B
+  - channel 5 - Arm T
+  - channel 6 - Wrist 1
+  - channel 8 - Claw T
+  - channel 9 - Claw B
 
-Keys
-----
+*** Keys
 wasd - forward, rotate-left, reverse, rotate-right
 r    - increase max speed (1,2,3,4)
 f    - decrease max speed (4,3,2,1)
