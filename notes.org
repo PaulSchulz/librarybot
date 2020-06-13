@@ -104,7 +104,7 @@ Check i2c interface status
 sudo i2cdetect -y 1
 #+END_SRC
 
-On Microsoft Serface Pro 3:
+On Microsoft Serface Pro 3 (example):
 #+BEGIN_SRC 
 sudo i2cdetect -l
 i2c-3	i2c       	i915 gmbus ssc                  	I2C adapter
