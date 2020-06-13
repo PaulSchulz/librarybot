@@ -25,4 +25,6 @@ See the file 'notes.org' for for development notes.
 
 ## Hardware
 
-PWM Channels <img src="images/pwm-channels.jpg" width="250x" alt="PWM Channels">
+PWM Channels
+
+<img src="images/pwm-channels.jpg" width="250x" alt="PWM Channels">
