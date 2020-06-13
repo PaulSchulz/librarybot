@@ -1,17 +1,24 @@
 <img src="images/junkbot.png" width="250x" alt="The Junkbot" align=right>
 
-# junkbot
+# librarybot
 
-The Junkbot, a telepresence robot
+The Library Bot is a telepresence robot for the Port Adelaide Enfield
+Libray.
+
+This code is partitially based on code created for the Junkbot, which
+was a earlier version of a telepresence robot.
 
 ## Videos
-Early Prototype, Test 1 - https://www.youtube.com/watch?v=g5yDYPbkZFk
+
+Telepresence Library Robot Test 1 - https://www.youtube.com/watch?v=qw003b2TruY
+
+Test 1 Robot griper Arm https://www.youtube.com/watch?v=FKdnzXIyMgM
 
 ## Installation
 
 Clone this repository from Github
 
-  git clone https://github.com/PaulSchulz/junkbot.git
+  git clone https://github.com/PaulSchulz/librarybot.git
 
 ## Development
 See the file 'notes.org' for for development notes.
