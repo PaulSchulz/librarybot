@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Librarybot Driver
+Comment=Librarybot Driver Controls
+Icon=/usr/share/pixmaps/openbox.xpm
+Exec=/usr/bin/python3 /home/pi/Documents/git/librarybot/python/servo-run.py
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;

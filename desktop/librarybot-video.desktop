@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=Junkbot Video
-Comment=Display Junkbot Video
+Name=Librarybot Video
+Comment=Display Librarybot Video
 Icon=/usr/share/pixmaps/openbox.xpm
 Exec=/usr/bin/vlc --playlist-autostart v4l2:///dev/video0
 Type=Application
