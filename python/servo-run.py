@@ -204,9 +204,9 @@ def on_press_servo(key):
         servo_angle[servoArmB]  -= 5
     # servoArmT
     if key.char == 'u':
-        servo_angle[servoArmT]  += 5
+        servo_angle[servoArmT]  -= 5 # Reversed
     if key.char == 'j':
-        servo_angle[servoArmT]  -= 5
+        servo_angle[servoArmT]  += 5
     # servoWrist
     if key.char == 'i':
         servo_angle[servoWrist] += 5
