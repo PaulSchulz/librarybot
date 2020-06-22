@@ -112,48 +112,40 @@ drive_mode_string     = ["Direct","Managed","Dance","Autonomous"]
 # Drive dynamic parameters
 throttle = 0     # Use signed integer -100..100 for integer steps
 steering = 0     # Used for differential motor driving Range -100..100
-# Initial servo directions
-armb  = 90
-armt  = 90
-wrist = 90
-claw1 = 90
-claw2 = 90
-light = 0
 
 # Servo values
-servo_angle = [0,0,0,0,
-               0,0,0,0,
-               0,0,0,0,
-               0,0,0,0]
-servo_angle_min = [0,0,0,0,
-                   0,0,0,0,
-                   0,0,0,0,
-                   0,0,0,0]
-servo_angle_max = [180,180,180,180,
+servo_angle      = [0,0,0,0,
+                    0,0,0,0,
+                    0,0,0,0,
+                    0,0,0,0]
+servo_angle_min  = [0,0,0,0,
+                    0,0,0,0,
+                    0,0,0,0,
+                    0,0,0,0]
+servo_angle_max  = [180,180,180,180,
                    180,180,180,180,
                    180,180,180,180,
                    180,180,180,180]
+servo_angle_init = [90,90,90,90,
+                    90,90,90,90,
+                    90,90,90,90,
+                    90,90,90,90]
 
 do_quit  = False # Exit if true
 
 # Zero Throttle and set arm servos to sensible values.
+for servo in servos:
+    servo_angle[servo] = servo_angle_init[servo]
+
 if hardware:
     kit.continuous_servo[motorLeft].throttle  = 0.0
     time.sleep(1)
     kit.continuous_servo[motorRight].throttle = 0.0
     time.sleep(1)
-    kit.servo[servoArmB].angle  = armb
-    time.sleep(1)
-    kit.servo[servoArmT].angle  = armt
-    time.sleep(1)
-    kit.servo[servoWrist].angle = wrist
-    time.sleep(1)
-    kit.servo[servoClaw1].angle = claw1
-    time.sleep(1)
-    kit.servo[servoClaw2].angle = claw2
-    time.sleep(1)
-    kit.servo[pwmLight].angle   = light
-    time.sleep(1)
+
+    for servo in servos:
+        kit.servo[servo].angle  = servo_angle[servo]
+        time.sleep(1)
 
 ##############################################################################
 # Functions
