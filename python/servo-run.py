@@ -83,7 +83,7 @@ motor                 = [motorLeft,motorRight]
 
 ##############################################################################
 # Servo channels
-servo                 = [servoArmB,
+servos                = [servoArmB,
                          servoArmT,
                          servoWrist,
                          servoClaw1,
@@ -230,11 +230,11 @@ def on_press_servo(key):
 
     # Apply Limits (Servos)
     # servo_limits()
-    if servo_angle[servoArmB] < 0:
-        servo_angle[servoArmB] = 0
-    if servo_angle[servoArmB] > servo_angle_max[servoArmB]:
-        servo_angle[servoArmB] = servo_angle_max[servoArmB]
-    # FIXME - add limits for all servo
+    for servo in servos:
+        if servo_angle[servo] < servo_angle_min[servo]:
+            servo_angle[servo] = servo_angle_min[servo]
+        if servo_angle[servo] > servo_angle_max[servo]:
+            servo_angle[servo] = servo_angle_max[servo]
 
 # FIXME Direct Drive
 def on_press_direct(key):
