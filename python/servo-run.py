@@ -215,9 +215,9 @@ def on_press_servo(key):
     if key.char == ';':
         servo_angle[servoClaw2] -= 5
     # pwmLight
-    if key.char == 'n':
-        servo_angle[pwmLight]   += 5
     if key.char == 'm':
+        servo_angle[pwmLight]   += 5
+    if key.char == 'n':
         servo_angle[pwmLight]   -= 5
 
     # Apply Limits (Servos)
