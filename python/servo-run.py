@@ -1,6 +1,8 @@
 # servo-run.py
 # Script for using keyboard to control the Junkbot robot
 
+# Author: Paul Schulz <paul@mawsonlakes.org>
+
 hardware = True   # Is i2c PWM controller board present. It is useful to
                   # be able to turn this off during development.
 tuning   = True   # Additionsl options for adjusting tuning parameters.
@@ -123,23 +125,35 @@ servo_angle = [0,0,0,0,
                0,0,0,0,
                0,0,0,0,
                0,0,0,0]
-servo_angle_max = [160,160,160,160,
-                   160,160,160,160,
-                   160,160,160,160,
-                   160,160,160,160]
+servo_angle_min = [0,0,0,0,
+                   0,0,0,0,
+                   0,0,0,0,
+                   0,0,0,0]
+servo_angle_max = [180,180,180,180,
+                   180,180,180,180,
+                   180,180,180,180,
+                   180,180,180,180]
 
 do_quit  = False # Exit if true
 
 # Zero Throttle and set arm servos to sensible values.
 if hardware:
     kit.continuous_servo[motorLeft].throttle  = 0.0
+    time.sleep(1)
     kit.continuous_servo[motorRight].throttle = 0.0
+    time.sleep(1)
     kit.servo[servoArmB].angle  = armb
+    time.sleep(1)
     kit.servo[servoArmT].angle  = armt
+    time.sleep(1)
     kit.servo[servoWrist].angle = wrist
+    time.sleep(1)
     kit.servo[servoClaw1].angle = claw1
+    time.sleep(1)
     kit.servo[servoClaw2].angle = claw2
+    time.sleep(1)
     kit.servo[pwmLight].angle   = light
+    time.sleep(1)
 
 ##############################################################################
 # Functions
