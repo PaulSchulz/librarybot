@@ -253,9 +253,9 @@ def on_press_direct(key):
         if key.char == 's':
             throttle = throttle - drive_throttle_step
         if key.char == 'a':
-            steering = steering - drive_steering_step
-        if key.char == 'd':
             steering = steering + drive_steering_step
+        if key.char == 'd':
+            steering = steering - drive_steering_step
         if key.char == ' ':
             throttle = 0
             steering = 0
@@ -292,7 +292,6 @@ def on_press_direct(key):
             drive_bias             = drive_bias - 1
         if key.char == '.':
             drive_bias             = drive_bias + 1
-
 
         # Apply Limits (Driving)
         # Raw Driving Limits
@@ -403,9 +402,9 @@ def on_press_managed(key):
         if key.char == 's':
             throttle = throttle - drive_throttle_step
         if key.char == 'a':
-            steering = steering - drive_steering_step
-        if key.char == 'd':
             steering = steering + drive_steering_step
+        if key.char == 'd':
+            steering = steering - drive_steering_step
         # Stop - see extended keycodes
 
         # Quit
