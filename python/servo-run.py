@@ -232,7 +232,7 @@ def on_press_servo(key):
             servo_angle[pwmLight] = servo_angle_max[pwmLight]
         elif servo_angle[pwmLight] == servo_angle_max[pwmLight]:
             servo_angle[pwmLight] = servo_angle_min[pwmLight]
-        else
+        else:
             servo_angle[pwmLight] = servo_angle_max[pwmLight]
 
     # Apply Limits (Servos)
