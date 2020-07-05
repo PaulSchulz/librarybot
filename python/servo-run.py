@@ -254,6 +254,7 @@ def on_press_direct(key):
     global drive_mode
 
     global servo_angle
+    global servo_angle_min
     global servo_angle_max
 
     do_quit = False
@@ -401,6 +402,7 @@ def on_press_managed(key):
     global do_quit
 
     global servo_angle
+    global servo_angle_min
     global servo_angle_max
 
     do_quit = False
