@@ -87,9 +87,12 @@ servos                = [servoArmB,
                          servoArmT,
                          servoWrist,
                          servoClaw1,
-                         servoClaw2,
-                         pwmLight
+                         servoClaw2
 ]
+
+##############################################################################
+# Switched channels
+switches              = [pwmLight]
 
 servoInit = []
 
@@ -129,13 +132,16 @@ servo_angle_max  = [180,180,180,180,
 servo_angle_init = [90,90,90,90,
                     90,90,90,90,
                     90,90,90,90,
-                    90,90,90,90]
+                     0,90,90,90]
 
 do_quit  = False # Exit if true
 
 # Zero Throttle and set arm servos to sensible values.
 for servo in servos:
     servo_angle[servo] = servo_angle_init[servo]
+
+for switch in switches:
+    servo_angle[switch] = servo_angle_min[switch]
 
 if hardware:
     kit.continuous_servo[motorLeft].throttle  = 0.0
@@ -145,6 +151,10 @@ if hardware:
 
     for servo in servos:
         kit.servo[servo].angle  = servo_angle[servo]
+        time.sleep(1)
+
+    for switch in switches:
+        kit.servo[switch].angle  = servo_angle[switch]
         time.sleep(1)
 
 ##############################################################################
@@ -167,10 +177,11 @@ def show_keys():
     print("To drive the Librarybot from the keyboard use the following keys.")
     print("Drive mode: {0}".format(drive_mode_string[drive_mode - 1]))
     print("  Drive:             Arm:")
-    print("                     Bot  Top  Wrist Claw1 Claw2 Light")
-    print("            w         y    u    i     o     p     n    - Up")
-    print("         a  s  d      h    j    k     l     ;     m    - Down")
+    print("                     Bot  Top  Wrist Claw1 Claw2")
+    print("            w         y    u    i     o     p  - Up")
+    print("         a  s  d      h    j    k     l     ;  - Down")
     print("")
+    print("            /     - Light (on/off)")
     print("          space   - Emergency Stop")
     print("            q     - Quit program")
     print("")
@@ -214,11 +225,15 @@ def on_press_servo(key):
         servo_angle[servoClaw2] += 5
     if key.char == ';':
         servo_angle[servoClaw2] -= 5
-    # pwmLight
-    if key.char == 'm':
-        servo_angle[pwmLight]   += 5
-    if key.char == 'n':
-        servo_angle[pwmLight]   -= 5
+
+    # pwmLight (toggle min/max)
+    if key.char == '/':
+        if servo_angle[pwmLight] == servo_angle_min[pwmLight]:
+            servo_angle[pwmLight] = servo_angle_max[pwmLight]
+        elif servo_angle[pwmLight] == servo_angle_max[pwmLight]:
+            servo_angle[pwmLight] = servo_angle_min[pwmLight]
+        else
+            servo_angle[pwmLight] = servo_angle_max[pwmLight]
 
     # Apply Limits (Servos)
     # servo_limits()
